@@ -1,33 +1,37 @@
+body {
+  background-color: #ffe4e9;
+}
+
+.jumbotron {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 .form-group {
-  width: 400px;
-  padding-left: 20px;
+  max-width: 400px;
+  padding: 20px;
+  margin: auto;
 }
 
 .btn {
-  display: block;
-}
-
-.form-check-label {
-  padding-left: 20px;
-  margin: 5px 0;
-}
-
-button.btn-info {
-  margin: 20px;
+  margin: 10px 0;
 }
 
 .message {
+  text-align: center;
+  font-weight: bold;
   display: none;
-  margin: 20px;
-  padding: 10px;
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  color: #155724;
 }
 
-body {
-  background-color: #ffe4e9; /* light pink */
+table {
+  width: 100%;
+  table-layout: fixed;
 }
-.jumbotron {
-  background-color: white;
+
+th,
+td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
 }

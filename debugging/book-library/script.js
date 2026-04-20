@@ -1,17 +1,23 @@
+// Get input elements
 const titleInputEl = document.getElementById("title");
 const authorInputEl = document.getElementById("author");
 const pagesInputEl = document.getElementById("pages");
 const checkInputEl = document.getElementById("check");
+
+// Get table and message
 const tableBodyEl = document.getElementById("table-body");
 const messageEl = document.getElementById("message");
 
+// Store books
 const myLibrary = [];
 
+// Load books when page loads
 window.addEventListener("load", function () {
   populateStorage();
   render();
 });
 
+// Book constructor
 function Book(title, author, pages, check) {
   this.title = title;
   this.author = author;
@@ -19,113 +25,123 @@ function Book(title, author, pages, check) {
   this.check = check;
 }
 
+// Default books
 function populateStorage() {
   if (myLibrary.length === 0) {
-    const book1 = new Book("Quran", "Revealed to Prophet Muhammad", 604, true);
-
-    const book2 = new Book(
-      "A Thousand Splendid Suns",
-      "Khaled Hosseini",
-      371,
-      true
+    myLibrary.push(
+      new Book("Quran", "Revealed to Prophet Muhammad", 604, true),
+      new Book("A Thousand Splendid Suns", "Khaled Hosseini", 371, true),
+      new Book("Harry Potter", "J.K. Rowling", 223, true),
+      new Book("This Is How You Heal", "Brianna Wiest", 600, true)
     );
-
-    const book3 = new Book("Harry Potter", "J.K. Rowling", 223, true);
-
-    const book4 = new Book("This Is How You Heal", "Brianna Wiest", 600, true);
-
-    myLibrary.push(book1, book2, book3, book4);
   }
 }
 
-function showMessage(text) {
+// Show message
+function showMessage(text, color = "green") {
   messageEl.textContent = text;
   messageEl.style.display = "block";
+  messageEl.style.color = color;
 
   setTimeout(function () {
     messageEl.textContent = "";
     messageEl.style.display = "none";
-  }, 2500);
+  }, 2000);
 }
 
-window.submit = function submit() {
+// Add new book
+window.submit = function () {
   const title = titleInputEl.value.trim();
   const author = authorInputEl.value.trim();
   const pagesValue = pagesInputEl.value.trim();
-  const hasReadBook = checkInputEl.checked;
+  const hasRead = checkInputEl.checked;
 
+  // Validate inputs
   if (title === "" || author === "" || pagesValue === "") {
-    alert("Please fill all fields!");
+    showMessage("Please fill all fields!", "red");
     return;
   }
 
   const pages = Number(pagesValue);
 
   if (Number.isNaN(pages) || pages < 1) {
-    alert("Pages must be a number greater than 0.");
+    showMessage("Pages must be a valid number!", "red");
     return;
   }
 
-  const book = new Book(title, author, pages, hasReadBook);
+  // Add book
+  const book = new Book(title, author, pages, hasRead);
   myLibrary.push(book);
 
   render();
+  showMessage(`Added "${title}"`);
 
+  // Clear inputs
   titleInputEl.value = "";
   authorInputEl.value = "";
   pagesInputEl.value = "";
   checkInputEl.checked = false;
 };
 
+// Render books
 function render() {
   tableBodyEl.textContent = "";
 
-  for (let i = 0; i < myLibrary.length; i++) {
-    const book = myLibrary[i];
+  myLibrary.forEach(function (book, index) {
+    const row = document.createElement("tr");
 
-    const rowEl = document.createElement("tr");
+    // Title
+    const titleCell = document.createElement("td");
+    titleCell.textContent = book.title;
 
-    const titleCellEl = document.createElement("td");
-    titleCellEl.textContent = book.title;
+    // Author
+    const authorCell = document.createElement("td");
+    authorCell.textContent = book.author;
 
-    const authorCellEl = document.createElement("td");
-    authorCellEl.textContent = book.author;
+    // Pages
+    const pagesCell = document.createElement("td");
+    pagesCell.textContent = book.pages;
 
-    const pagesCellEl = document.createElement("td");
-    pagesCellEl.textContent = book.pages;
+    // Read button
+    const readCell = document.createElement("td");
+    const readBtn = document.createElement("button");
 
-    const readCellEl = document.createElement("td");
-    const readButtonEl = document.createElement("button");
-    readButtonEl.className = "btn btn-success";
-    readButtonEl.textContent = book.check ? "Yes" : "No";
+    readBtn.className = book.check ? "btn btn-success" : "btn btn-secondary";
 
-    readButtonEl.addEventListener("click", function () {
+    readBtn.textContent = book.check ? "Yes" : "No";
+
+    readBtn.addEventListener("click", function () {
       book.check = !book.check;
       render();
     });
 
-    readCellEl.appendChild(readButtonEl);
+    readCell.appendChild(readBtn);
 
-    const deleteCellEl = document.createElement("td");
-    const deleteButtonEl = document.createElement("button");
-    deleteButtonEl.className = "btn btn-warning";
-    deleteButtonEl.textContent = "Delete";
+    // Delete button
+    const deleteCell = document.createElement("td");
+    const deleteBtn = document.createElement("button");
 
-    deleteButtonEl.addEventListener("click", function () {
+    deleteBtn.className = "btn btn-danger";
+    deleteBtn.textContent = "Delete";
+
+    deleteBtn.addEventListener("click", function () {
       const deletedTitle = book.title;
-      myLibrary.splice(i, 1);
+
+      myLibrary.splice(index, 1);
       render();
-      showMessage('You deleted "' + deletedTitle + '".');
+
+      showMessage(`Deleted "${deletedTitle}"`, "red");
     });
 
-    deleteCellEl.appendChild(deleteButtonEl);
+    deleteCell.appendChild(deleteBtn);
 
-    rowEl.appendChild(titleCellEl);
-    rowEl.appendChild(authorCellEl);
-    rowEl.appendChild(pagesCellEl);
-    rowEl.appendChild(readCellEl);
-    rowEl.appendChild(deleteCellEl);
+    // Add cells to row
+    row.appendChild(titleCell);
+    row.appendChild(authorCell);
+    row.appendChild(pagesCell);
+    row.appendChild(readCell);
+    row.appendChild(deleteCell);
 
-    tableBodyEl.appendChild(rowEl);
-  }
+    tableBodyEl.appendChild(row);
+  });
 }
