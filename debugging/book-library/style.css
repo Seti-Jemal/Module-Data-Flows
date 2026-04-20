@@ -1,19 +1,37 @@
+body {
+  background-color: #ffe4e9;
+}
+
+.jumbotron {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 .form-group {
-  width: 400px;
-  height: 300px;
-  align-self: left;
-  padding-left: 20px;
+  max-width: 400px;
+  padding: 20px;
+  margin: auto;
 }
 
 .btn {
-  display: block;
+  margin: 10px 0;
 }
 
-.form-check-label {
-  padding-left: 20px;
-  margin: 5px 0px 5px 0px;
+.message {
+  text-align: center;
+  font-weight: bold;
+  display: none;
 }
 
-button.btn-info {
-  margin: 20px;
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+th,
+td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
 }
