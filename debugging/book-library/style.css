@@ -15,3 +15,19 @@
 button.btn-info {
   margin: 20px;
 }
+
+.message {
+  display: none;
+  margin: 20px;
+  padding: 10px;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+body {
+  background-color: #ffe4e9; /* light pink */
+}
+.jumbotron {
+  background-color: white;
+}
